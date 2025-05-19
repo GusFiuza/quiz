@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Interativo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center py-10">
+    <div class="bg-white rounded-lg shadow-md w-full max-w-2xl p-6">
+        <div id="inicio-quiz" class="text-center space-y-4">
+            <h1 class="text-3xl font-semibold text-blue-700">Quiz Interativo</h1>
+            <p class="text-gray-600">Teste seus conhecimentos sobre a França!</p>
+            <button id="comecar-quiz" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-md transition duration-300 ease-in-out shadow-md">
+                Começar Quiz
+            </button>
+        </div>
+        <div id="quiz-container" class="space-y-6 hidden">
+            </div>
+        <div id="resposta-container" class="space-y-4 hidden">
+             </div>
+        <button id="reiniciar-quiz" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-md w-full transition duration-300 ease-in-out hidden">
+            Reiniciar Quiz
+        </button>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                category: "Cultura",
+                questions: [
+                    {
+                        question: "Qual das seguintes áreas NÃO é tradicionalmente considerada uma forte influência cultural da França?",
+                        options: ["Moda", "Tecnologia da informação", "Gastronomia"],
+                        correctAnswer: "Tecnologia da informação",
+                        explanation: "A França é conhecida por sua moda e gastronomia, mas não tradicionalmente pela tecnologia da informação."
+                    },
+                    {
+                        question: "Qual termo francês é usado para descrever a alta cozinha?",
+                        options: ["Bistro cuisine", "Haute cuisine", "Cuisine du terroir"],
+                        correctAnswer: "Haute cuisine",
+                        explanation: "'Haute cuisine' refere-se à alta cozinha, caracterizada por preparações elaboradas e ingredientes de alta qualidade."
+                    },
+                    {
+                        question: "Qual cidade é amplamente considerada a capital mundial da moda?",
+                        options: ["Milão", "Paris", "Nova York"],
+                        correctAnswer: "Paris",
+                        explanation: "Paris é reconhecida mundialmente como a capital da moda, lar de grandes estilistas e eventos de moda."
+                    },
+                    {
+                        question: "Quem são creditados como os inventores do cinematógrafo?",
+                        options: ["Irmãos Lumière", "Thomas Edison", "Irmãos Wright"],
+                        correctAnswer: "Irmãos Lumière",
+                        explanation: "Os Irmãos Lumière são creditados com a invenção do cinematógrafo, um precursor do projetor de filmes."
+                    },
+                    {
+                        question: "Qual é o lema nacional da França?",
+                        options: ["Liberté, égalité, fraternité", "E pluribus unum", "Si vis pacem, para bellum"],
+                        correctAnswer: "Liberté, égalité, fraternité",
+                        explanation: "O lema nacional da França é 'Liberté, égalité, fraternité', que significa 'Liberdade, igualdade, fraternidade'."
+                    },
+                    {
+                        question: "Qual aspecto é central para a identidade cultural francesa, com forte ênfase em sua preservação?",
+                        options: ["A arquitetura gótica", "A língua francesa", "A produção de vinho"],
+                        correctAnswer: "A língua francesa",
+                        explanation: "A língua francesa é um aspecto central da identidade cultural da França, com forte ênfase em sua preservação."
+                    },
+                    {
+                        question: "Qual foi o papel histórico mais significativo de Joana D'Arc na história da França?",
+                        options: ["Tornar-se a primeira rainha da França.", "Liderar o exército francês em importantes vitórias durante a Guerra dos Cem Anos.", "Inventar a guilhotina."],
+                        correctAnswer: "Liderar o exército francês em importantes vitórias durante a Guerra dos Cem Anos.",
+                        explanation: "Joana D'Arc liderou o exército francês em importantes vitórias durante a Guerra dos Cem Anos, sendo uma figura crucial na história da França."
+                    },
+                    {
+                        question: "Qual tipo de pão é considerado um alimento básico essencial na cultura francesa?",
+                        options: ["Pão de centeio", "Baguete", "Brioche"],
+                        correctAnswer: "Baguete",
+                        explanation: "A baguete é um pão longo e fino, considerado um alimento básico essencial na cultura francesa."
+                    },
+                    {
+                        question: "Quantos tipos distintos de queijo estima-se que existam na França?",
+                        options: ["Cerca de 100", "Mais de 1.600", "Aproximadamente 500"],
+                        correctAnswer: "Mais de 1.600",
+                        explanation: "Estima-se que existam mais de 1.600 tipos distintos de queijo na França, refletindo a rica diversidade gastronômica do país."
+                    },
+                    {
+                        question: "Qual famoso sítio arqueológico francês é conhecido por suas pinturas rupestres?",
+                        options: ["Stonehenge", "Lascaux", "Coliseu"],
+                        correctAnswer: "Lascaux",
+                        explanation: "Lascaux é um famoso sítio arqueológico francês conhecido por suas pinturas rupestres pré-históricas."
+                    }
+                ]
+            },
+            {
+                category: "Turismo",
+                questions: [
+                    {
+                        question: "Qual país consistentemente recebe o maior número de turistas internacionais por ano?",
+                        options: ["Espanha", "França", "Itália"],
+                        correctAnswer: "França",
+                        explanation: "A França é o país que consistentemente recebe o maior número de turistas internacionais por ano."
+                    },
+                    {
+                        question: "Qual famoso marco parisiense NÃO abriga uma vasta coleção de arte?",
+                        options: ["Museu do Louvre", "Torre Eiffel", "Museu d'Orsay"],
+                        correctAnswer: "Torre Eiffel",
+                        explanation: "A Torre Eiffel é um monumento famoso, mas não abriga uma vasta coleção de arte. O Museu do Louvre e o Museu d'Orsay são conhecidos por suas coleções de arte."
+                    },
+                    {
+                        question: "Além de Paris, qual outra região francesa é um importante polo turístico conhecido por suas praias?",
+                        options: ["Borgonha", "Riviera Francesa", "Bretanha"],
+                        correctAnswer: "Riviera Francesa",
+                        explanation: "A Riviera Francesa é conhecida por suas praias deslumbrantes e é um importante polo turístico na França."
+                    },
+                    {
+                        question: "Qual das seguintes características NÃO descreve a diversidade de paisagens na França?",
+                        options: ["Desertos áridos", "Montanhas alpinas", "Vales vinícolas"],
+                        correctAnswer: "Desertos áridos",
+                        explanation: "A França possui montanhas alpinas e vales vinícolas, mas não desertos áridos."
+                    },
+                    {
+                        question: "Quantos castelos (châteaux) aproximadamente existem na França?",
+                        options: ["Cerca de 1.000", "Mais de 40.000", "Aproximadamente 10.000"],
+                        correctAnswer: "Mais de 40.000",
+                        explanation: "Estima-se que existam mais de 40.000 castelos (châteaux) na França, muitos dos quais são atrações turísticas."
+                    }
+                ]
+            },
+            {
+                category: "História",
+                questions: [
+                    {
+                        question: "A história da França remonta a qual período?",
+                        options: ["Idade Média", "Pré-história", "Império Romano"],
+                        correctAnswer: "Pré-história",
+                        explanation: "A história da França remonta ao período da pré-história, com evidências de presença humana desde tempos antigos."
+                    },
+                    {
+                        question: "Qual império conquistou a Gália (antiga França) no século I a.C.?",
+                        options: ["Império Grego", "Império Romano", "Império Persa"],
+                        correctAnswer: "Império Romano",
+                        explanation: "O Império Romano conquistou a Gália no século I a.C., influenciando significativamente a cultura e a história da região."
+                    },
+                    {
+                        question: "Qual evento histórico marcou o surgimento do Reino Franco, que deu origem à França?",
+                        options: ["A Guerra dos Cem Anos", "As Cruzadas", "A Idade Média"],
+                        correctAnswer: "A Idade Média",
+                        explanation: "O Reino Franco surgiu durante a Idade Média, marcando um período importante na formação da França."
+                    },
+                    {
+                        question: "Em que ano ocorreu a Revolução Francesa, um marco na história do país?",
+                        options: ["1492", "1789", "1914"],
+                        correctAnswer: "1789",
+                        explanation: "A Revolução Francesa ocorreu em 1789 e foi um evento crucial na história da França e do mundo."
+                    },
+                    {
+                        question: "A França teve um papel significativo em quais eventos históricos mundiais?",
+                        options: ["A Guerra Fria apenas", "As Guerras Mundiais", "A Guerra da Coreia apenas"],
+                        correctAnswer: "As Guerras Mundiais",
+                        explanation: "A França teve um papel significativo em ambas as Guerras Mundiais, tanto na Primeira quanto na Segunda Guerra Mundial."
+                    }
+                ]
+            }
+        ];
+
+        let currentQuestions = [];
+        let score = 0;
+        let currentCategoryIndex = 0;
+
+        const inicioQuizDiv = document.getElementById('inicio-quiz');
+        const quizContainer = document.getElementById('quiz-container');
+        const respostaContainer = document.getElementById('resposta-container');
+        const reiniciarQuizButton = document.getElementById('reiniciar-quiz');
+        const comecarQuizButton = document.getElementById('comecar-quiz');
+
+        function iniciarQuiz() {
+            inicioQuizDiv.classList.add('hidden');
+            quizContainer.classList.remove('hidden');
+            respostaContainer.classList.add('hidden');
+            currentQuestions = [];
+            score = 0;
+            currentCategoryIndex = 0;
+            quizContainer.innerHTML = '';
+            respostaContainer.innerHTML = '';
+            quizData.forEach(categoriaData => {
+                currentQuestions = currentQuestions.concat(categoriaData.questions);
+            });
+            currentQuestions.sort(() => Math.random() - 0.5);
+            exibirProximaPergunta();
+            reiniciarQuizButton.classList.remove('block');
+            reiniciarQuizButton.classList.add('hidden');
+        }
+
+
+        function exibirProximaPergunta() {
+            quizContainer.innerHTML = '';
+            respostaContainer.innerHTML = '';
+            respostaContainer.classList.add('hidden');
+            if (currentQuestions.length === 0) {
+                exibirResultado();
+                return;
+            }
+
+            const perguntaAtual = currentQuestions[0];
+
+            const perguntaDiv = document.createElement('div');
+            perguntaDiv.classList.add('bg-white', 'rounded-lg', 'shadow-md', 'p-6', 'mb-6');
+
+            const tituloPergunta = document.createElement('h2');
+            tituloPergunta.classList.add('text-xl', 'font-semibold', 'text-gray-800', 'mb-4');
+            tituloPergunta.textContent = perguntaAtual.question;
+            perguntaDiv.appendChild(tituloPergunta);
+
+            const opcoesDiv = document.createElement('div');
+            opcoesDiv.classList.add('space-y-3');
+
+            perguntaAtual.options.forEach(opcao => {
+                const opcaoBotao = document.createElement('button');
+                opcaoBotao.classList.add('bg-gray-200', 'hover:bg-gray-300', 'text-gray-700', 'font-semibold', 'py-2', 'px-4', 'rounded-md', 'w-full', 'text-left', 'transition', 'duration-300', 'ease-in-out');
+                opcaoBotao.textContent = opcao;
+                opcaoBotao.addEventListener('click', () => verificarResposta(opcao, perguntaAtual.correctAnswer));
+                opcoesDiv.appendChild(opcaoBotao);
+            });
+
+            perguntaDiv.appendChild(opcoesDiv);
+            quizContainer.appendChild(perguntaDiv);
+        }
+
+        function verificarResposta(respostaSelecionada, correta) {
+            const perguntaAtual = currentQuestions[0];
+            const respostaDiv = document.createElement('div');
+            respostaDiv.classList.add('bg-white', 'rounded-lg', 'shadow-md', 'p-6', 'mb-6', 'text-center');
+
+             const opcoesDiv = document.createElement('div');
+            opcoesDiv.classList.add('space-y-3');
+
+            perguntaAtual.options.forEach(opcao => {
+                const opcaoBotao = document.createElement('button');
+                opcaoBotao.classList.add('bg-gray-200', 'text-gray-700', 'font-semibold', 'py-2', 'px-4', 'rounded-md', 'w-full', 'text-left');
+                opcaoBotao.textContent = opcao;
+                if(opcao === correta){
+                     opcaoBotao.classList.remove('bg-gray-200');
+                     opcaoBotao.classList.add('bg-green-200');
+                }
+                else if(opcao === respostaSelecionada){
+                    opcaoBotao.classList.remove('bg-gray-200');
+                    opcaoBotao.classList.add('bg-red-200');
+                }
+                opcoesDiv.appendChild(opcaoBotao);
+            });
+            quizContainer.innerHTML = '';
+            quizContainer.appendChild(opcoesDiv);
+
+            if (respostaSelecionada === correta) {
+                score++;
+                respostaDiv.innerHTML += `<p class="text-green-600 font-semibold">Resposta Correta!</p>`;
+            } else {
+                respostaDiv.innerHTML += `<p class="text-red-600 font-semibold">Resposta Incorreta!</p>
+                                         <p class="text-gray-700">A resposta correta é: <span class="font-semibold">${correta}</span>.</p>
+                                         <p class="text-gray-700">${perguntaAtual.explanation}</p>`;
+            }
+
+            const proximaPerguntaButton = document.createElement('button');
+            proximaPerguntaButton.textContent = 'Próxima Pergunta';
+            proximaPerguntaButton.classList.add('bg-blue-500', 'hover:bg-blue-600', 'text-white', 'font-semibold', 'py-2', 'px-4', 'rounded-md', 'transition', 'duration-300', 'ease-in-out', 'mt-4');
+            proximaPerguntaButton.addEventListener('click', () => {
+                currentQuestions.shift();
+                exibirProximaPergunta();
+            });
+            respostaDiv.appendChild(proximaPerguntaButton);
+            respostaContainer.innerHTML = '';
+            respostaContainer.appendChild(respostaDiv);
+            respostaContainer.classList.remove('hidden');
+
+        }
+
+        function exibirResultado() {
+            quizContainer.innerHTML = `<div class="bg-white rounded-lg shadow-md p-6 text-center">
+                                         <h2 class="text-2xl font-semibold text-blue-600 mb-4">Resultado Final</h2>
+                                         <p class="text-lg text-gray-700 mb-6">Sua pontuação: <span class="font-semibold">${score} / 20</span></p>
+                                         <button onclick="iniciarQuiz()" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-md transition duration-300 ease-in-out">Jogar Novamente</button>
+                                       </div>`;
+            respostaContainer.innerHTML = '';
+            respostaContainer.classList.add('hidden');
+            reiniciarQuizButton.classList.remove('hidden');
+            reiniciarQuizButton.classList.add('block');
+        }
+
+        reiniciarQuizButton.addEventListener('click', iniciarQuiz);
+        comecarQuizButton.addEventListener('click', iniciarQuiz);
+
+        //iniciarQuiz(); // Inicia o quiz quando a página carrega
+    </script>
+</body>
+</html>
